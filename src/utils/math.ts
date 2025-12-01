@@ -1,3 +1,11 @@
+export const circle = (
+    number: number,
+    [start, end]: [number, number],
+): number => {
+    const range = end - start + 1
+    return ((((number - start) % range) + range) % range) + start
+}
+
 export const count = <T>(
     array: T[],
     predicate: (value: T, i: number, array: T[]) => boolean,
