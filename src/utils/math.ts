@@ -11,5 +11,8 @@ export const count = <T>(
     predicate: (value: T, i: number, array: T[]) => boolean,
 ): number => array.filter(predicate).length
 
+export const isDivisible = (left: number, right: number): boolean =>
+    !(left % right)
+
 export const sum = (numbers: number[]): number =>
     numbers.reduce((left, right) => left + right, 0)
