@@ -2,11 +2,17 @@ import { list, math, text } from "@/utils"
 
 const getClicks = (rotations: number[]): number[] =>
     rotations.reduce(
-        (clicks, rotation) => [
-            ...clicks,
-            math.circle(list.at(clicks, -1) + rotation, [0, 99]),
-        ],
+        (clicks, rotation) => [...clicks, list.at(clicks, -1) + rotation],
         [50],
+    )
+
+const getCycles = (prevClick: number, nextClick: number): number =>
+    prevClick === nextClick ? 0 : (
+        +math.isDivisible(prevClick, 100) +
+        getCycles(
+            prevClick < nextClick ? prevClick + 1 : prevClick - 1,
+            nextClick,
+        )
     )
 
 const getRotations = (input: string): number[] =>
@@ -16,24 +22,14 @@ const getRotations = (input: string): number[] =>
             direction === "L" ? -distance.join("") : +distance.join(""),
         )
 
-export const part01 = (input: string): number => {
-    const rotations = getRotations(input)
-    const clicks = getClicks(rotations)
-
-    return math.count(clicks, (click) => click === 0)
-}
-
-export const part02 = (input: string): number => {
-    const rotations = getRotations(input)
-    const clicks = getClicks(rotations)
-
-    return math.sum(
-        clicks.slice(0, -1).map((click, i) => {
-            const rotation = list.at(rotations, i)
-
-            return rotation < 0 ?
-                    Math.floor((click + rotation) / -100) + +!!click
-                :   Math.floor((click + rotation) / 100)
-        }),
+export const part01 = (input: string): number =>
+    math.count(getClicks(getRotations(input)), (click) =>
+        math.isDivisible(click, 100),
     )
-}
+
+export const part02 = (input: string): number =>
+    math.sum(
+        getClicks(getRotations(input)).map((click, i, clicks) =>
+            !i ? 0 : getCycles(list.at(clicks, i - 1), click),
+        ),
+    )
