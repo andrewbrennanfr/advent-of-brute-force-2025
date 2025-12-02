@@ -27,7 +27,7 @@ export const part01 = (input: string): number =>
                 id,
                 (string) =>
                     math.isDivisible(string.length, 2) &&
-                    /^(?<pattern>.+)\k<pattern>$/.test(string),
+                    /^(?<repeat>.+)\k<repeat>$/.test(string),
             ),
         ),
     )
@@ -35,11 +35,8 @@ export const part01 = (input: string): number =>
 export const part02 = (input: string): number =>
     math.sum(
         getIds(input).flatMap((id) =>
-            getInvalids(
-                id,
-                (string) =>
-                    string.length > 1 &&
-                    /^(?<pattern>.+)\k<pattern>+$/.test(string),
+            getInvalids(id, (string) =>
+                /^(?<repeat>.+)\k<repeat>+$/.test(string),
             ),
         ),
     )

@@ -9,18 +9,11 @@ const getClicks = (rotations: number[]): number[] =>
 const getCycles = (prevClick: number, nextClick: number): number =>
     prevClick === nextClick ? 0 : (
         +math.isDivisible(prevClick, 100) +
-        getCycles(
-            prevClick < nextClick ? prevClick + 1 : prevClick - 1,
-            nextClick,
-        )
+        getCycles(prevClick + (prevClick < nextClick ? 1 : -1), nextClick)
     )
 
 const getRotations = (input: string): number[] =>
-    text
-        .lines(input)
-        .map(([direction, ...distance]) =>
-            direction === "L" ? -distance.join("") : +distance.join(""),
-        )
+    text.lines(input).map((line) => +line.replace("L", "-").replace("R", "+"))
 
 export const part01 = (input: string): number =>
     math.count(getClicks(getRotations(input)), (click) =>
