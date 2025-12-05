@@ -11,6 +11,13 @@ export const count = <T>(
     predicate: (value: T, i: number, array: T[]) => boolean,
 ): number => array.filter(predicate).length
 
+export const isBetween = (
+    left: number,
+    center: number,
+    right: number,
+): boolean =>
+    (left <= center && center <= right) || (right <= center && center <= left)
+
 export const isDivisible = (left: number, right: number): boolean =>
     !(left % right)
 
