@@ -1,11 +1,11 @@
 import { dev, list, math, text } from "@/utils"
 
 const getIds = (input: string): number[] =>
-    text.lines(list.at(input.trim().split("\n\n"), 1)).map(Number)
+    text.lines(list.get(input.trim().split("\n\n"), 1)).map(Number)
 
 const getRanges = (input: string): [number, number][] =>
     text
-        .lines(list.at(input.trim().split("\n\n"), 0))
+        .lines(list.get(input.trim().split("\n\n"), 0))
         .map((line) => line.split("-"))
         .map(([left = dev.error(), right = dev.error()]) => [+left, +right])
 

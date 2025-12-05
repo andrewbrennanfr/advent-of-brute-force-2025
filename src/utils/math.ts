@@ -9,7 +9,7 @@ export const circle = (
 export const count = <T>(
     array: T[],
     predicate: (value: T, i: number, array: T[]) => boolean,
-): number => array.filter(predicate).length
+): number => array.reduce((total, ...args) => total + +predicate(...args), 0)
 
 export const isBetween = (
     left: number,

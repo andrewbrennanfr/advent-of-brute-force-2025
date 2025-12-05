@@ -1,16 +1,15 @@
 import { dev } from "@/utils"
 
-export const at = <T>(array: T[], i: number): NonNullable<T> =>
-    array.at(i) ?? dev.error(`list.at(array, ${i})`)
+export const get = <T>(array: T[], i: number): NonNullable<T> =>
+    array.at(i) ?? dev.error(`list.get(array, ${i})`)
 
-export const sort = <T>(array: T[], fn?: (left: T, right: T) => number): T[] =>
-    array.toSorted(
-        fn ??
-            ((left, right) =>
-                left < right ? -1
-                : left > right ? 1
-                : 0),
-    )
+export const sort = <T>(
+    array: T[],
+    compare: (left: T, right: T) => number = (left, right) =>
+        left < right ? -1
+        : left > right ? 1
+        : 0,
+): T[] => array.toSorted(compare)
 
 export const unique = <T>(
     array: T[],

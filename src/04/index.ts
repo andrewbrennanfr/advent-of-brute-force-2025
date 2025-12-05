@@ -2,13 +2,10 @@ import { grid, math, text } from "@/utils"
 
 const getRolls = (input: string): Map<string, Record<"c" | "r", number>> =>
     new Map(
-        text
-            .grid(input)
-            .flatMap((row, r) =>
-                row
-                    .map((cell, c) => ({ cell, r, c }))
-                    .filter(({ cell }) => cell === "@"),
-            )
+        grid
+            .map(text.grid(input), (cell, { c, r }) => ({ cell, c, r }))
+            .flat()
+            .filter(({ cell }) => cell === "@")
             .map(({ c, r }) => [`${r}_${c}`, { c, r }]),
     )
 
@@ -18,7 +15,7 @@ const getAccessible = (
 ): number => {
     const toKeep = [...rolls.values()].filter(
         ({ c, r }) =>
-            math.count(Object.values(grid.siblings({ c, r })), (sibling) =>
+            math.count(Object.values(grid.square({ c, r })), (sibling) =>
                 rolls.has(`${sibling.r}_${sibling.c}`),
             ) >= 4,
     )

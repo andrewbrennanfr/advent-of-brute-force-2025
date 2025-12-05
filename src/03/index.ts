@@ -1,7 +1,7 @@
-import { math, text } from "@/utils"
+import { grid, math, text } from "@/utils"
 
-const getBanks = (input: string): number[][] =>
-    text.lines(input).map((line) => text.characters(line).map(Number))
+const getBanks = (input: string): grid.Grid<number> =>
+    grid.map(text.grid(input), Number)
 
 const getJoltage = (bank: number[], size = 2): string => {
     if (size === 0) return ""
