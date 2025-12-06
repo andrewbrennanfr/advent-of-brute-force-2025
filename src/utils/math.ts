@@ -21,5 +21,8 @@ export const isBetween = (
 export const isDivisible = (left: number, right: number): boolean =>
     !(left % right)
 
+export const prod = (numbers: number[]): number =>
+    numbers.reduce((left, right) => left * right, +!!numbers.length)
+
 export const sum = (numbers: number[]): number =>
     numbers.reduce((left, right) => left + right, 0)

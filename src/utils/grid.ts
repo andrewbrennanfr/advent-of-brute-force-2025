@@ -1,5 +1,19 @@
 import { list } from "@/utils"
 
+export const clockwise = <T>(
+    [first = [], ...grid]: Grid<T>,
+    degrees = 90,
+): Grid<T> => {
+    if (degrees === 0) return [first, ...grid]
+
+    return clockwise(
+        first.map((cell, index) =>
+            [cell, ...grid.map((row) => list.get(row, index))].toReversed(),
+        ),
+        degrees - 90,
+    )
+}
+
 export const cross = ({ c, r }: Position): Cross => ({
     n: { r: r - 1, c },
     e: { r, c: c + 1 },
@@ -15,6 +29,9 @@ export const get = <T>(
 ): T | null => grid[r]?.[c] ?? null
 
 export type Grid<T> = T[][]
+
+export const join = <T>(grid: Grid<T>): string =>
+    grid.map((row) => row.join("")).join("\n")
 
 export const manhattan = (left: number, right: number): number =>
     Math.abs(left - right)
@@ -49,7 +66,7 @@ export const pathUntil = (
 export type Position = Record<"c" | "r", number>
 
 export const print = <T>(grid: Grid<T>): Grid<T> => {
-    console.log(grid.map((row) => row.join("")).join("\n"))
+    console.log(join(grid))
 
     return grid
 }
