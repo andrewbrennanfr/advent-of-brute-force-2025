@@ -18,6 +18,13 @@ export const isBetween = (
 ): boolean =>
     (left <= center && center <= right) || (right <= center && center <= left)
 
+export const isInside = (
+    left: number,
+    center: number,
+    right: number,
+): boolean =>
+    (left < center && center < right) || (right < center && center < left)
+
 export const isDivisible = (left: number, right: number): boolean =>
     !(left % right)
 

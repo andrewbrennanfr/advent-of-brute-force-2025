@@ -1,5 +1,8 @@
 import { list } from "@/utils"
 
+export const area = (left: Position, right: Position): number =>
+    (manhattan(left.r, right.r) + 1) * (manhattan(left.c, right.c) + 1)
+
 export const clockwise = <T>(
     [first = [], ...grid]: Grid<T>,
     degrees = 90,
