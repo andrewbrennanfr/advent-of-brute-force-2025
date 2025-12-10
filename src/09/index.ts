@@ -120,6 +120,13 @@ const isInside = (
     tiles: grid.Position[],
     tileLines: Record<"from" | "to", grid.Position>[],
     position: grid.Position,
+    square: {
+        area: number
+        corners: grid.Position[]
+        from: grid.Position
+        lines: Record<"from" | "to", grid.Position>[]
+        to: grid.Position
+    },
 ): boolean => {
     const maxRow = Math.max(...tiles.map(({ r }) => r)) + 1
     const maxCol = Math.max(...tiles.map(({ c }) => c)) + 1
@@ -172,9 +179,19 @@ const isInside = (
     if (southPasses === southIntersections)
         return !math.isDivisible(eastPasses, 2)
 
-    dev.log(
-        "This is a particulary cruel input that reaches here - let's assume it's not what we are looking for!",
-    )
+    if (
+        // Cannot determine in any direction - but let's check for overlaps
+        !square.lines.some((squareLine) =>
+            tileLines.some((tileLine) =>
+                isIntersectingWithoutEnds(squareLine, tileLine),
+            ),
+        )
+    ) {
+        dev.log(
+            "This is a particulary cruel input that reaches here - let's assume it's not what we are looking for!",
+        )
+    }
+
     return false
 }
 
@@ -189,7 +206,9 @@ const isConstrained = (
         to: grid.Position
     },
 ): boolean =>
-    square.corners.every((corner) => isInside(tiles, tileLines, corner)) &&
+    square.corners.every((corner) =>
+        isInside(tiles, tileLines, corner, square),
+    ) &&
     !square.lines.some((squareLine) =>
         tileLines.some((tileLine) =>
             isIntersectingWithoutEnds(squareLine, tileLine),
